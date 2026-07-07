@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lift Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Workout navigation">
+        <section class="brand-block">
+          <p class="eyebrow">Lift Tracker</p>
+          <h1>Four steady days, one optional core day.</h1>
+          <div class="summary-strip">
+            <span id="weekStatus">Week 1: 0/5</span>
+            <span id="timeStatus">Under 60 min</span>
+          </div>
+        </section>
+
+        <nav id="dayTabs" class="day-tabs" aria-label="Workout days"></nav>
+
+        <section class="panel compact-panel">
+          <div class="panel-heading">
+            <h2>Today</h2>
+            <button id="completeDayBtn" class="icon-button" type="button" title="Mark day complete">
+              <span aria-hidden="true">✓</span>
+            </button>
+          </div>
+          <div id="dayFocus" class="focus-list"></div>
+        </section>
+
+        <section class="panel compact-panel">
+          <div class="panel-heading">
+            <h2>History</h2>
+            <button id="clearHistoryBtn" class="text-button danger" type="button">Clear</button>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p id="dayMeta" class="eyebrow">Day 1</p>
+            <h2 id="dayTitle">Workout</h2>
+          </div>
+          <div class="toolbar" role="group" aria-label="Workout controls">
+            <button id="resetPlanBtn" class="tool-button" type="button" title="Restore default plan">
+              <span aria-hidden="true">↻</span>
+              <span>Reset</span>
+            </button>
+            <button id="exportBtn" class="tool-button" type="button" title="Export progress">
+              <span aria-hidden="true">⇩</span>
+              <span>Export</span>
+            </button>
+            <label class="tool-button file-button" title="Import progress">
+              <span aria-hidden="true">⇧</span>
+              <span>Import</span>
+              <input id="importInput" type="file" accept="application/json" />
+            </label>
+          </div>
+        </header>
+
+        <section class="overview-band" aria-label="Workout overview">
+          <div>
+            <span class="stat-label">Estimated time</span>
+            <strong id="estimatedTime">55 min</strong>
+          </div>
+          <div>
+            <span class="stat-label">Target areas</span>
+            <strong id="targetAreas">Chest, arms</strong>
+          </div>
+          <div>
+            <span class="stat-label">Session note</span>
+            <input id="sessionNote" type="text" maxlength="120" placeholder="Energy, soreness, plan tweaks" />
+          </div>
+        </section>
+
+        <section class="training-grid">
+          <section class="workout-column" aria-label="Warmup stretches">
+            <div class="section-heading">
+              <h3>Start Stretches</h3>
+              <span>3 moves</span>
+            </div>
+            <div id="warmupList" class="stretch-list"></div>
+          </section>
+
+          <section class="workout-column lifts-column" aria-label="Workout lifts">
+            <div class="section-heading">
+              <h3>Lifts</h3>
+              <span id="liftCount">6 moves</span>
+            </div>
+            <div id="liftList" class="lift-list"></div>
+          </section>
+
+          <section class="workout-column" aria-label="Cooldown stretches">
+            <div class="section-heading">
+              <h3>Finish Stretches</h3>
+              <span>3 moves</span>
+            </div>
+            <div id="cooldownList" class="stretch-list"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="swapDialog">
+      <form method="dialog" class="swap-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Swap Lift</p>
+            <h2 id="swapTitle">Choose a replacement</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit" title="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div id="swapOptions" class="swap-options"></div>
+      </form>
+    </dialog>
+
+    <dialog id="historyDialog">
+      <form method="dialog" class="history-panel">
+        <div class="panel-heading">
+          <div>
+            <p id="historyDetailMeta" class="eyebrow">History</p>
+            <h2 id="historyDetailTitle">Completed workout</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="submit" title="Close">
+            <span aria-hidden="true">X</span>
+          </button>
+        </div>
+        <div id="historyDetailBody" class="history-detail"></div>
+      </form>
+    </dialog>
+
+    <script src="app-v2.js"></script>
+  </body>
+</html>
