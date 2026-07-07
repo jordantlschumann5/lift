@@ -290,12 +290,31 @@ h3 {
   padding: 8px 10px;
 }
 
+.tool-button > span[aria-hidden="true"] {
+  display: none;
+}
+
 .icon-button {
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
   font-size: 1.05rem;
+}
+
+#completeDayBtn span[aria-hidden="true"],
+dialog .icon-button span[aria-hidden="true"] {
+  font-size: 0;
+}
+
+#completeDayBtn span[aria-hidden="true"]::after {
+  content: "Done";
+  font-size: 0.72rem;
+}
+
+dialog .icon-button span[aria-hidden="true"]::after {
+  content: "X";
+  font-size: 1rem;
 }
 
 .text-button {
