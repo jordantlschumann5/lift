@@ -17,9 +17,11 @@ Progress is saved in the browser with `localStorage`. Use Export/Import to move 
 - Five-day weekly cycle with automatic reset after all five days are completed
 - Previous weeks stay in History so progress can be compared over time
 - Completed days store a snapshot of weights, reps, notes, and lift selections
+- Lower-back-friendly default leg/full-body choices that avoid loaded hinges and heavy spinal loading
 - Chest, arms, shoulders, back, legs, and core are covered across the week
 - Each session stays under one hour
-- Three starting stretches and three finishing stretches per workout
+- Five starting stretches and five finishing stretches per workout, with back-focused mobility included
 - Stretch demo links
 - Swap lifts while keeping the same training category
+- Save your own custom lift from the Swap panel so it appears as a future swap option
 - Export and import progress as JSON
