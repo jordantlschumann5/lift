@@ -572,6 +572,33 @@ dialog::backdrop {
   margin-top: 14px;
 }
 
+.custom-lift-form {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf8;
+  padding: 12px;
+}
+
+.custom-lift-form h3 {
+  color: var(--ink);
+  font-size: 0.94rem;
+}
+
+.custom-lift-form p {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.custom-lift-grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.3fr) minmax(140px, 1fr) 72px minmax(86px, 0.7fr);
+  gap: 8px;
+}
+
 .swap-option {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -634,6 +661,7 @@ dialog::backdrop {
   }
 
   .set-row,
+  .custom-lift-grid,
   .swap-option {
     grid-template-columns: 1fr;
   }
