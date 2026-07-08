@@ -1,5 +1,6 @@
 const STORAGE_KEY = "lift-tracker-v2";
 const LEGACY_STORAGE_KEY = "lift-tracker-v1";
+const PLAN_VERSION = 3;
 
 const stretchBank = {
   fullBody: [
@@ -20,6 +21,14 @@ const stretchBank = {
     ["Cross-Body Shoulder Stretch", "30 seconds each side"],
     ["Child's Pose Reach", "45 seconds"],
   ],
+  back: [
+    ["Cat-Cow", "8 slow reps"],
+    ["Thread the Needle", "35 seconds each side"],
+    ["Open Book Rotation", "6 slow reps each side"],
+    ["Kneeling Lat Stretch", "40 seconds"],
+    ["Supine Knee-to-Chest", "30 seconds each side"],
+    ["Child's Pose Side Reach", "35 seconds each side"],
+  ],
 };
 
 const swapBank = {
@@ -34,9 +43,10 @@ const swapBank = {
     ["Single-Arm Cable Row", "Unilateral row with easy load changes", "3", "10 each"],
   ],
   legs: [
-    ["Goblet Squat", "Controlled squat pattern with less spinal loading", "3", "10-12"],
+    ["Belt Squat", "Leg drive with very low spinal loading", "3", "8-12"],
     ["Leg Press", "Heavy leg work with simple progression", "3", "10"],
-    ["Reverse Lunge", "Single-leg strength and hip control", "3", "8 each"],
+    ["Leg Extension", "Quad work without loading the low back", "3", "10-12"],
+    ["Seated Leg Curl", "Hamstrings without hinging through the low back", "3", "10-12"],
   ],
   shoulders: [
     ["Seated Dumbbell Shoulder Press", "Main shoulder press with easy setup", "3", "8-10"],
@@ -53,6 +63,15 @@ const swapBank = {
     ["Dead Bug", "Low-fatigue trunk control", "3", "8 each"],
     ["Cable Crunch", "Loadable abdominal flexion", "3", "12"],
   ],
+};
+
+const categoryLabels = {
+  chest: "Chest",
+  back: "Back",
+  legs: "Legs",
+  shoulders: "Shoulders",
+  arms: "Arms",
+  core: "Core",
 };
 
 function lift(name, category, muscles, sets, reps) {
@@ -73,16 +92,17 @@ const defaultPlan = [
     id: "day-1",
     title: "Push Strength",
     optional: false,
-    time: 55,
+    time: 58,
     targets: ["Chest", "Shoulders", "Arms"],
-    warmup: [stretchBank.fullBody[0], stretchBank.fullBody[1], stretchBank.hipsLegs[0]],
-    cooldown: [stretchBank.upper[0], stretchBank.upper[2], stretchBank.hipsLegs[1]],
+    warmup: [stretchBank.fullBody[0], stretchBank.fullBody[1], stretchBank.back[0], stretchBank.back[1], stretchBank.hipsLegs[0]],
+    cooldown: [stretchBank.upper[0], stretchBank.upper[2], stretchBank.back[3], stretchBank.back[4], stretchBank.hipsLegs[1]],
     lifts: [
       lift("Barbell Bench Press", "chest", ["Chest", "Triceps"], "4", "5-8"),
       lift("Incline Dumbbell Press", "chest", ["Upper chest", "Shoulders"], "3", "8-10"),
       lift("Seated Dumbbell Shoulder Press", "shoulders", ["Shoulders"], "3", "8-10"),
       lift("Cable Fly", "chest", ["Chest"], "2", "12-15"),
-      lift("Rope Pressdown", "arms", ["Triceps"], "3", "10-12"),
+      lift("Rope Pressdown", "arms", ["Triceps"], "2", "10-12"),
+      lift("Cable Curl", "arms", ["Biceps"], "1", "12-15"),
       lift("Dumbbell Lateral Raise", "shoulders", ["Side delts"], "2", "12-15"),
     ],
   },
@@ -92,15 +112,15 @@ const defaultPlan = [
     optional: false,
     time: 58,
     targets: ["Legs", "Hips", "Core"],
-    warmup: [stretchBank.fullBody[2], stretchBank.hipsLegs[0], stretchBank.hipsLegs[3]],
-    cooldown: [stretchBank.hipsLegs[1], stretchBank.hipsLegs[2], stretchBank.fullBody[3]],
+    warmup: [stretchBank.fullBody[2], stretchBank.back[0], stretchBank.back[2], stretchBank.hipsLegs[0], stretchBank.hipsLegs[3]],
+    cooldown: [stretchBank.back[4], stretchBank.back[5], stretchBank.hipsLegs[1], stretchBank.hipsLegs[2], stretchBank.fullBody[3]],
     lifts: [
-      lift("Back Squat", "legs", ["Quads", "Glutes"], "4", "5-8"),
-      lift("Romanian Deadlift", "legs", ["Hamstrings", "Glutes"], "3", "8-10"),
-      lift("Walking Lunge", "legs", ["Legs", "Hips"], "3", "10 each"),
-      lift("Leg Curl", "legs", ["Hamstrings"], "3", "10-12"),
+      lift("Leg Press", "legs", ["Quads", "Glutes"], "4", "8-12"),
+      lift("Seated Leg Curl", "legs", ["Hamstrings"], "3", "10-12"),
+      lift("Leg Extension", "legs", ["Quads"], "3", "10-12"),
+      lift("Machine Hip Thrust", "legs", ["Glutes"], "3", "10-12"),
       lift("Standing Calf Raise", "legs", ["Calves"], "3", "12-15"),
-      lift("Farmer Carry", "core", ["Core", "Grip"], "3", "40 sec"),
+      lift("Cable Curl", "arms", ["Biceps"], "1", "12-15"),
     ],
   },
   {
@@ -109,13 +129,13 @@ const defaultPlan = [
     optional: false,
     time: 56,
     targets: ["Back", "Arms", "Shoulders"],
-    warmup: [stretchBank.fullBody[0], stretchBank.fullBody[3], stretchBank.hipsLegs[2]],
-    cooldown: [stretchBank.upper[1], stretchBank.upper[2], stretchBank.hipsLegs[0]],
+    warmup: [stretchBank.fullBody[0], stretchBank.fullBody[3], stretchBank.back[0], stretchBank.back[1], stretchBank.hipsLegs[2]],
+    cooldown: [stretchBank.upper[1], stretchBank.upper[2], stretchBank.back[3], stretchBank.back[4], stretchBank.hipsLegs[0]],
     lifts: [
-      lift("Pull-Up or Assisted Pull-Up", "back", ["Lats", "Biceps"], "4", "6-10"),
+      lift("Pull-Up or Assisted Pull-Up", "back", ["Lats", "Biceps"], "3", "6-10"),
       lift("Chest-Supported Row", "back", ["Mid back"], "3", "8-12"),
-      lift("Single-Arm Cable Row", "back", ["Back"], "3", "10 each"),
-      lift("Face Pull", "shoulders", ["Rear delts", "Upper back"], "3", "12-15"),
+      lift("Lat Pulldown", "back", ["Lats", "Biceps"], "3", "10-12"),
+      lift("Face Pull", "shoulders", ["Rear delts", "Upper back"], "2", "12-15"),
       lift("EZ-Bar Curl", "arms", ["Biceps"], "3", "10-12"),
       lift("Hammer Curl", "arms", ["Biceps", "Forearms"], "2", "12"),
     ],
@@ -124,15 +144,15 @@ const defaultPlan = [
     id: "day-4",
     title: "Full Body Balance",
     optional: false,
-    time: 54,
+    time: 56,
     targets: ["Chest", "Back", "Legs", "Arms"],
-    warmup: [stretchBank.fullBody[1], stretchBank.fullBody[2], stretchBank.hipsLegs[3]],
-    cooldown: [stretchBank.upper[0], stretchBank.upper[1], stretchBank.hipsLegs[1]],
+    warmup: [stretchBank.fullBody[1], stretchBank.fullBody[2], stretchBank.back[0], stretchBank.back[2], stretchBank.hipsLegs[3]],
+    cooldown: [stretchBank.upper[0], stretchBank.upper[1], stretchBank.back[3], stretchBank.back[5], stretchBank.hipsLegs[1]],
     lifts: [
-      lift("Trap Bar Deadlift", "legs", ["Legs", "Back"], "3", "5-6"),
+      lift("Belt Squat", "legs", ["Quads", "Glutes"], "3", "8-12"),
       lift("Dumbbell Bench Press", "chest", ["Chest", "Triceps"], "3", "8-10"),
-      lift("Lat Pulldown", "back", ["Lats"], "3", "10-12"),
-      lift("Bulgarian Split Squat", "legs", ["Quads", "Glutes"], "2", "8 each"),
+      lift("Chest-Supported Row", "back", ["Back"], "3", "8-12"),
+      lift("Step-Up", "legs", ["Quads", "Glutes"], "2", "8 each"),
       lift("Cable Lateral Raise", "shoulders", ["Shoulders"], "2", "12-15"),
       lift("Superset: Curl + Pressdown", "arms", ["Biceps", "Triceps"], "2", "12 each"),
     ],
@@ -141,17 +161,17 @@ const defaultPlan = [
     id: "day-5",
     title: "Optional Core Reset",
     optional: true,
-    time: 42,
+    time: 45,
     targets: ["Core", "Mobility", "Light full body"],
-    warmup: [stretchBank.fullBody[0], stretchBank.fullBody[2], stretchBank.hipsLegs[0]],
-    cooldown: [stretchBank.upper[1], stretchBank.hipsLegs[1], stretchBank.hipsLegs[2]],
+    warmup: [stretchBank.fullBody[0], stretchBank.fullBody[2], stretchBank.back[0], stretchBank.back[1], stretchBank.hipsLegs[0]],
+    cooldown: [stretchBank.upper[1], stretchBank.back[3], stretchBank.back[4], stretchBank.hipsLegs[1], stretchBank.hipsLegs[2]],
     lifts: [
       lift("Pallof Press", "core", ["Core"], "3", "10 each"),
       lift("Dead Bug", "core", ["Core"], "3", "8 each"),
-      lift("Kettlebell Goblet Squat", "legs", ["Legs", "Core"], "2", "10"),
+      lift("Leg Press", "legs", ["Legs"], "2", "12"),
       lift("Push-Up", "chest", ["Chest", "Arms"], "2", "Easy AMRAP"),
       lift("Cable Row", "back", ["Back"], "2", "12"),
-      lift("Suitcase Carry", "core", ["Core", "Grip"], "3", "30 sec each"),
+      lift("Cable Curl", "arms", ["Biceps"], "1", "12-15"),
     ],
   },
 ];
@@ -167,6 +187,27 @@ function deepClone(value) {
 
 function clonePlan() {
   return deepClone(defaultPlan);
+}
+
+function upgradePlan(savedPlan = []) {
+  return clonePlan().map((defaultDay) => {
+    const savedDay = savedPlan.find((day) => day.id === defaultDay.id);
+    if (!savedDay) return defaultDay;
+    return {
+      ...defaultDay,
+      sessionNote: savedDay.sessionNote || "",
+      lifts: defaultDay.lifts.map((defaultLift) => {
+        const savedLift = savedDay.lifts?.find((item) => item.name === defaultLift.name);
+        return savedLift
+          ? {
+              ...defaultLift,
+              entries: savedLift.entries || defaultLift.entries,
+              note: savedLift.note || "",
+            }
+          : defaultLift;
+      }),
+    };
+  });
 }
 
 function uid() {
@@ -210,16 +251,20 @@ function loadState() {
 }
 
 function normalizeState(input) {
+  const hasCurrentPlan = Array.isArray(input.plan) && input.planVersion === PLAN_VERSION;
   return {
-    plan: Array.isArray(input.plan) ? input.plan : clonePlan(),
+    plan: hasCurrentPlan ? input.plan : upgradePlan(Array.isArray(input.plan) ? input.plan : []),
+    planVersion: PLAN_VERSION,
     currentWeek: input.currentWeek?.completed ? input.currentWeek : createWeek(Number(input.currentWeek?.number) || 1),
     weeks: Array.isArray(input.weeks) ? input.weeks : [],
+    customLifts: Array.isArray(input.customLifts) ? input.customLifts : [],
     activeDayId: input.activeDayId || "day-1",
   };
 }
 
 function saveState() {
   state.activeDayId = activeDayId;
+  state.planVersion = PLAN_VERSION;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
@@ -454,7 +499,8 @@ function openSwap(liftId) {
   $("swapTitle").textContent = `Replace ${item.name}`;
   const options = $("swapOptions");
   options.innerHTML = "";
-  (swapBank[item.category] || swapBank.core).forEach(([name, description, sets, reps]) => {
+  renderCustomLiftForm(options, item.category);
+  swapOptionsForCategory(item.category).forEach(({ name, description, sets, reps, muscles, category }) => {
     const option = document.createElement("article");
     option.className = "swap-option";
     option.innerHTML = `
@@ -464,10 +510,73 @@ function openSwap(liftId) {
       </div>
       <button type="button">Use</button>
     `;
-    option.querySelector("button").addEventListener("click", () => swapLift(name, item.category, item.muscles, sets, reps));
+    option.querySelector("button").addEventListener("click", () => swapLift(name, category, muscles, sets, reps));
     options.appendChild(option);
   });
   $("swapDialog").showModal();
+}
+
+function swapOptionsForCategory(category) {
+  const builtIn = (swapBank[category] || swapBank.core).map(([name, description, sets, reps]) => ({
+    name,
+    description,
+    sets,
+    reps,
+    category,
+    muscles: [categoryLabels[category] || "Target"],
+  }));
+  const saved = state.customLifts
+    .filter((item) => item.category === category)
+    .map((item) => ({ ...item, description: item.description || "Saved custom lift" }));
+  return [...saved, ...builtIn];
+}
+
+function renderCustomLiftForm(container, category) {
+  const form = document.createElement("section");
+  form.className = "custom-lift-form";
+  form.innerHTML = `
+    <div>
+      <h3>Add custom ${escapeHtml(categoryLabels[category] || "lift")}</h3>
+      <p>Saved lifts show up here next time you press Swap for this category.</p>
+    </div>
+    <div class="custom-lift-grid">
+      <input id="customLiftName" type="text" maxlength="48" placeholder="Lift name" />
+      <input id="customLiftMuscles" type="text" maxlength="80" placeholder="Targets, comma separated" value="${escapeAttr(categoryLabels[category] || "")}" />
+      <input id="customLiftSets" type="number" min="1" max="6" step="1" placeholder="Sets" />
+      <input id="customLiftReps" type="text" maxlength="20" placeholder="Reps" />
+    </div>
+    <button class="text-button" type="button">Save custom lift</button>
+  `;
+  form.querySelector("button").addEventListener("click", () => saveCustomLift(category, form));
+  container.appendChild(form);
+}
+
+function saveCustomLift(category, form) {
+  const name = form.querySelector("#customLiftName").value.trim();
+  const muscles = form
+    .querySelector("#customLiftMuscles")
+    .value.split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const sets = form.querySelector("#customLiftSets").value || "3";
+  const reps = form.querySelector("#customLiftReps").value.trim() || "10-12";
+  if (!name) {
+    alert("Add a lift name first.");
+    return;
+  }
+  const custom = {
+    id: uid(),
+    name,
+    category,
+    muscles: muscles.length ? muscles : [categoryLabels[category] || "Target"],
+    description: "Saved custom lift",
+    sets,
+    reps,
+  };
+  state.customLifts = state.customLifts.filter((item) => !(item.category === category && item.name.toLowerCase() === name.toLowerCase()));
+  state.customLifts.unshift(custom);
+  saveState();
+  openSwap(swapTarget);
 }
 
 function swapLift(name, category, muscles, sets, reps) {
@@ -535,6 +644,7 @@ function importProgress(file) {
 
 function resetPlan() {
   state.plan = clonePlan();
+  state.planVersion = PLAN_VERSION;
   activeDayId = "day-1";
   render();
 }
@@ -543,6 +653,8 @@ function clearHistory() {
   if (!confirm("Clear all saved workout history and current-week completions?")) return;
   state.weeks = [];
   state.currentWeek = createWeek(1);
+  state.plan = clonePlan();
+  state.planVersion = PLAN_VERSION;
   render();
 }
 
