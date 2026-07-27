@@ -24,4 +24,8 @@ Progress is saved in the browser with `localStorage`. Use Export/Import to move 
 - Stretch demo links
 - Swap lifts while keeping the same training category
 - Save your own custom lift from the Swap panel so it appears as a future swap option
+- Add or delete sets on any lift
+- Add or delete lifts inside a workout
+- Edit, add, or remove stretches inside a workout
+- See previous saved results for a lift and a simple next target suggestion
 - Export and import progress as JSON
